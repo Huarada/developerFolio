@@ -1,9 +1,9 @@
 // src/components/chatWidget/ChatWidget.js
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import React, { useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./ChatWidget.scss";
-import { CHAT_SYSTEM_PROMPT, CHAT_WORKER_URL } from "../../chatConfig";
+import {CHAT_SYSTEM_PROMPT, CHAT_WORKER_URL} from "../../chatConfig";
 
 /**
  * ChatWidget
@@ -28,7 +28,7 @@ const ChatWidget = () => {
    * as a visible message. Only "user" and "assistant" messages are shown.
    */
   const [messages, setMessages] = useState([
-    { role: "system", content: CHAT_SYSTEM_PROMPT }
+    {role: "system", content: CHAT_SYSTEM_PROMPT}
   ]);
 
   /**
@@ -40,7 +40,7 @@ const ChatWidget = () => {
    * Derived list of messages that should be rendered in the UI
    * (we hide the system prompt from the visitor).
    */
-  const visibleMessages = messages.filter((m) => m.role !== "system");
+  const visibleMessages = messages.filter(m => m.role !== "system");
 
   /**
    * Automatically scrolls to the bottom whenever the message list changes.
@@ -57,10 +57,10 @@ const ChatWidget = () => {
    * it also pushes a welcome assistant message.
    */
   const handleToggle = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen(prev => !prev);
 
     if (!isOpen && visibleMessages.length === 0) {
-      setMessages((prev) => [
+      setMessages(prev => [
         ...prev,
         {
           role: "assistant",
@@ -77,7 +77,7 @@ const ChatWidget = () => {
    * The backend is expected to return a JSON object like:
    *   { reply: "text from the assistant" }
    */
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     const trimmed = input.trim();
 
@@ -87,7 +87,7 @@ const ChatWidget = () => {
 
     setInput("");
 
-    const userMessage = { role: "user", content: trimmed };
+    const userMessage = {role: "user", content: trimmed};
     const updatedHistory = [...messages, userMessage];
     setMessages(updatedHistory);
 
@@ -98,18 +98,14 @@ const ChatWidget = () => {
 
       const response = await fetch(CHAT_WORKER_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: compactHistory })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({messages: compactHistory})
       });
 
       // New: log status and body if not OK
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(
-          "[chat-worker] HTTP error",
-          response.status,
-          errorText
-        );
+        console.error("[chat-worker] HTTP error", response.status, errorText);
         throw new Error(`HTTP ${response.status}`);
       }
 
@@ -139,7 +135,6 @@ const ChatWidget = () => {
       setIsSending(false);
     }
   };
-
 
   return (
     <>
@@ -181,13 +176,12 @@ const ChatWidget = () => {
             ))}
           </div>
 
-
           <form className="lh-chat__form" onSubmit={handleSubmit}>
             <textarea
               className="lh-chat__input"
               placeholder="Ask something about the portfolio…"
               value={input}
-              onChange={(event) => setInput(event.target.value)}
+              onChange={event => setInput(event.target.value)}
               disabled={isSending}
               rows={1}
             />
