@@ -12,8 +12,7 @@
  * Endpoint of the backend / proxy that talks to OpenAI.
  * Typically this will be a serverless function or a Cloudflare Worker.
  */
-export const CHAT_WORKER_URL =
-  "https://test/chat"; //change this URL to your own worker URL, like cloudflare worker URL
+export const CHAT_WORKER_URL = "https://test/chat"; //change this URL to your own worker URL, like cloudflare worker URL
 
 // change the prompt to your own details
 /**
